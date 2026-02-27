@@ -16,4 +16,14 @@ export const routes: Routes = [
     path: 'task-list',
     loadComponent: () => import('./features/tasks/task-list/task-list.page').then( m => m.TaskListPage)
   },
+  {
+    path: 'category-list',
+    loadComponent: () => import('./features/categories/category-list/category-list.page').then( m => m.CategoryListPage)
+  },
+  {
+  path: 'category',
+  loadComponent: () =>
+    import('./features/categories/category-list/category-list.page')
+      .then(m => m.CategoryListPage),
+}
 ];

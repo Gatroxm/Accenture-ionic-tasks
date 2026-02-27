@@ -1,13 +1,114 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>task-list</ion-title>
+    <ion-title>Mis Tareas</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">task-list</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+
+  <!-- =========================
+       FORMULARIO CREAR TAREA
+  ========================== -->
+
+  <ion-item>
+    <ion-input placeholder="Nueva tarea..." [(ngModel)]="newTaskTitle">
+    </ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Categoría</ion-label>
+    <ion-select [(ngModel)]="selectedCategoryId" placeholder="Opcional" [disabled]="categories.length === 0">
+
+      <ion-select-option *ngFor="let category of categories" [value]="category.id">
+        {{ category.name }}
+      </ion-select-option>
+
+    </ion-select>
+  </ion-item>
+
+  <ion-button expand="block" (click)="addTask()">
+    Agregar
+  </ion-button>
+
+  <!-- =========================
+       SIN CATEGORÍAS
+  ========================== -->
+
+  <ion-card *ngIf="categories.length === 0">
+    <ion-card-header>
+      <ion-card-title>No tienes categorías</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      Para organizar mejor tus tareas, crea una categoría.
+
+      <ion-button expand="block" fill="outline" (click)="goToCategories()">
+        Crear Categorías
+      </ion-button>
+
+    </ion-card-content>
+  </ion-card>
+
+  <!-- =========================
+       FILTRO (solo si hay categorías)
+  ========================== -->
+
+  <ion-segment *ngIf="categories.length > 0" [(ngModel)]="filterCategoryId" (ionChange)="applyFilter()">
+
+    <ion-segment-button value="all">
+      <ion-label>Todas</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button *ngFor="let category of categories" [value]="category.id">
+      <ion-label>{{ category.name }}</ion-label>
+    </ion-segment-button>
+
+  </ion-segment>
+
+  <!-- =========================
+       LISTA DE TAREAS
+  ========================== -->
+
+  <ion-list>
+
+    <ion-item *ngFor="let task of tasks; trackBy: trackById">
+
+      <ion-checkbox slot="start" [checked]="task.completed" (ionChange)="toggleTask(task.id)">
+      </ion-checkbox>
+
+      <ion-label>
+
+        <div [style.text-decoration]="task.completed ? 'line-through' : 'none'">
+          {{ task.title }}
+        </div>
+
+        <ion-note *ngIf="task.categoryId" color="medium">
+
+          {{ categoryMap[task.categoryId!] }}
+
+        </ion-note>
+
+      </ion-label>
+
+      <ion-button fill="clear" color="danger" slot="end" (click)="deleteTask(task.id)">
+
+        <ion-icon name="trash"></ion-icon>
+
+      </ion-button>
+
+    </ion-item>
+
+  </ion-list>
+  <!-- ===== EMPTY STATE ===== -->
+
+  <ion-card *ngIf="tasks.length === 0" class="ion-text-center">
+    <ion-card-header>
+      <ion-card-title>No hay tareas</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      Agrega tu primera tarea para comenzar.
+    </ion-card-content>
+
+  </ion-card>
 </ion-content>
