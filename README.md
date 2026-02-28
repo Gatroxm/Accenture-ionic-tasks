@@ -75,7 +75,7 @@ src/app/
 ## 1️⃣ Clonar repositorio
 
 ```bash
-git clone <repo-url>
+git clone <https://github.com/Gatroxm/Accenture-ionic-tasks.git>
 cd ionic-tasks
 ```
 
