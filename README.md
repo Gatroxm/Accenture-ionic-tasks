@@ -234,6 +234,16 @@ Se aplicaron las siguientes técnicas:
 
 ---
 
+## 📦 APK
+
+El APK de la aplicación se encuentra adjunto en la entrega o puede generarse ejecutando:
+
+ionic build --prod
+ionic cap sync android
+Build → Generate Signed APK
+
+---
+
 # 👨‍💻 Autor
 
 Gustavo Adolfo Muños Reyes
