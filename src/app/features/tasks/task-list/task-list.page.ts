@@ -1,3 +1,4 @@
+import { FeatureFlagService } from 'src/app/core/services/feature-flag.service';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -72,17 +73,26 @@ export class TaskListPage implements OnInit {
   newTaskTitle: string = '';
   selectedCategoryId?: string;
   filterCategoryId: string = 'all';
-
+  categoriesEnabled = true;
   constructor(
     private taskService: TaskService,
     private categoryService: CategoryService,
+    private featureFlagService: FeatureFlagService,
     private router: Router
   ) {
     addIcons({ trash });
   }
 
-  ngOnInit() {
-    this.loadCategories();
+
+  async ngOnInit() {
+
+    this.categoriesEnabled =
+      await this.featureFlagService.isCategoriesEnabled();
+
+    if (this.categoriesEnabled) {
+      this.loadCategories();
+    }
+
     this.loadTasks();
   }
 

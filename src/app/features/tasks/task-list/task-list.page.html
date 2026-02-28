@@ -15,7 +15,8 @@
     </ion-input>
   </ion-item>
 
-  <ion-item>
+  <!-- Selector Categoría (solo si el flag está activo) -->
+  <ion-item *ngIf="categoriesEnabled">
     <ion-label>Categoría</ion-label>
     <ion-select [(ngModel)]="selectedCategoryId" placeholder="Opcional" [disabled]="categories.length === 0">
 
@@ -34,7 +35,8 @@
        SIN CATEGORÍAS
   ========================== -->
 
-  <ion-card *ngIf="categories.length === 0">
+  <ion-card *ngIf="categoriesEnabled && categories.length === 0">
+
     <ion-card-header>
       <ion-card-title>No tienes categorías</ion-card-title>
     </ion-card-header>
@@ -50,10 +52,11 @@
   </ion-card>
 
   <!-- =========================
-       FILTRO (solo si hay categorías)
+       FILTRO (solo si flag activo y hay categorías)
   ========================== -->
 
-  <ion-segment *ngIf="categories.length > 0" [(ngModel)]="filterCategoryId" (ionChange)="applyFilter()">
+  <ion-segment *ngIf="categoriesEnabled && categories.length > 0" [(ngModel)]="filterCategoryId"
+    (ionChange)="applyFilter()">
 
     <ion-segment-button value="all">
       <ion-label>Todas</ion-label>
@@ -82,7 +85,8 @@
           {{ task.title }}
         </div>
 
-        <ion-note *ngIf="task.categoryId" color="medium">
+        <!-- Mostrar categoría solo si flag activo -->
+        <ion-note *ngIf="categoriesEnabled && task.categoryId" color="medium">
 
           {{ categoryMap[task.categoryId!] }}
 
@@ -99,9 +103,13 @@
     </ion-item>
 
   </ion-list>
-  <!-- ===== EMPTY STATE ===== -->
+
+  <!-- =========================
+       EMPTY STATE
+  ========================== -->
 
   <ion-card *ngIf="tasks.length === 0" class="ion-text-center">
+
     <ion-card-header>
       <ion-card-title>No hay tareas</ion-card-title>
     </ion-card-header>
@@ -111,4 +119,5 @@
     </ion-card-content>
 
   </ion-card>
+
 </ion-content>
